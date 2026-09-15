@@ -1,9 +1,7 @@
-# Deploy Cloudflare Pages with Wrangler (optional direct upload)
+# Deploy Cloudflare Pages with Wrangler（需先配置 Secrets，否则请用 Dashboard 连 Git）
 name: Deploy Pages
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 jobs:
