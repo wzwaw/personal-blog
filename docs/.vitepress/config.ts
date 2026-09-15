@@ -5,6 +5,8 @@ export default defineConfig({
   lang: 'zh-CN',
   title: '个人博客',
   description: '工作思考 · 知识文档 · 外链摘录',
+  // GitHub Pages 项目站需要 /personal-blog/；Cloudflare Pages 根域名保持 /
+  base: process.env.VITEPRESS_BASE || '/',
   cleanUrls: true,
   lastUpdated: true,
 
