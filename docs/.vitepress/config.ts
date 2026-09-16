@@ -28,7 +28,13 @@ export default defineConfig({
       '/docs/': [
         {
           text: '知识文档',
-          items: [{ text: '如何向本站投稿内容', link: '/docs/publishing-workflow' }]
+          items: [
+            {
+              text: 'React：从 setState 到 Commit',
+              link: '/docs/react-update-from-setstate-to-commit'
+            },
+            { text: '如何向本站投稿内容', link: '/docs/publishing-workflow' }
+          ]
         }
       ],
       '/links/': [
