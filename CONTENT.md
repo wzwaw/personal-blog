@@ -15,6 +15,6 @@
 
 ## 当前状态
 
-- 空站点已上线：https://wzwaw.github.io/personal-blog/
+- 正式站点已上线：https://muyue627-blog.pages.dev/
 - 投稿流程：`docs/docs/publishing-workflow.md`
-- 等第一批内容后再发文
+- 首篇文章已发布：React 更新到底发生了什么：从 setState 到 Commit

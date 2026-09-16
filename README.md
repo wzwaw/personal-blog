@@ -1,6 +1,6 @@
 # 个人博客（VitePress + Cloudflare Pages）
 
-零成本个人站：Markdown 写作，Git 推送自动发布。
+零成本个人站：使用 Markdown 写作，通过 Cloudflare Pages 发布。
 
 ## 本地开发
 
@@ -35,11 +35,18 @@ https://github.com/wzwaw/personal-blog
 | Build output directory | `docs/.vitepress/dist` |
 | Node | `22` |
 
-成功后地址形如：`https://personal-blog.pages.dev`
+正式地址：`https://muyue627-blog.pages.dev`
 
 ### 之后更新
 
-改 Markdown → `git push` → 自动重新构建。
+```bash
+npm run docs:build
+npx wrangler pages deploy docs/.vitepress/dist \
+  --project-name=muyue627-blog \
+  --branch=main
+```
+
+发布完成后再提交并推送源码。
 
 ### 备用 GitHub Pages
 

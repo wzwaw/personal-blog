@@ -1,30 +1,27 @@
-# Cloudflare Pages 接入（推荐正式托管）
+# Cloudflare Pages 部署
 
-仓库已推送：https://github.com/wzwaw/personal-blog（当前为私有，可按需改公开）。
+正式站点：https://muyue627-blog.pages.dev
 
-## 方式 A：Dashboard 连接 Git（最简单，推荐）
+Cloudflare Pages 项目名：`muyue627-blog`
 
-1. 打开 https://dash.cloudflare.com 用邮箱注册/登录（可不绑信用卡）
-2. **Workers & Pages** → **Create** → **Pages** → **Connect to Git**
-3. 授权 GitHub，勾选仓库 `wzwaw/personal-blog`
-4. 构建设置：
+## 本地发布
 
-| 项 | 值 |
-|----|-----|
-| Project name | `personal-blog`（将得到 `personal-blog.pages.dev`） |
-| Production branch | `main` |
-| Build command | `npm run docs:build` |
-| Build output directory | `docs/.vitepress/dist` |
-| Root directory | `/` |
-| Environment variable | `NODE_VERSION` = `22` |
+确认 Wrangler 已登录：
 
-5. **Save and Deploy**，约 1～2 分钟后得到：
+```bash
+npx wrangler whoami
+```
 
-`https://personal-blog.pages.dev`
+构建并发布：
 
-之后每次 `git push` 自动更新。
+```bash
+npm run docs:build
+npx wrangler pages deploy docs/.vitepress/dist \
+  --project-name=muyue627-blog \
+  --branch=main
+```
 
-## 方式 B：GitHub Actions + API Token
+## GitHub Actions 发布
 
 1. Cloudflare → My Profile → API Tokens → Create Token → 模板 **Edit Cloudflare Workers**（需含 Pages 编辑）
 2. 复制 Account ID（Workers 概览右侧）

@@ -4,9 +4,9 @@
 
 ## 本站
 
-- [线上地址（GitHub Pages）](https://wzwaw.github.io/personal-blog/) — 当前已上线的免费访问入口
+- [线上地址（Cloudflare Pages）](https://muyue627-blog.pages.dev/) — 当前正式访问入口
 - [源码仓库](https://github.com/wzwaw/personal-blog)
-- [Cloudflare Pages 接入说明](https://github.com/wzwaw/personal-blog/blob/main/CLOUDFLARE.md) — 接好后可得 `*.pages.dev`（国内通常更稳）
+- [Cloudflare Pages 发布说明](https://github.com/wzwaw/personal-blog/blob/main/CLOUDFLARE.md)
 
 ## 站点搭建
 
