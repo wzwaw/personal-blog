@@ -30,6 +30,10 @@ export default defineConfig({
           text: '知识文档',
           items: [
             {
+              text: 'macOS：ClashX TUN 与公司 VPN 排障',
+              link: '/docs/macos-clashx-tun-corporate-vpn'
+            },
+            {
               text: 'React：从 setState 到 Commit',
               link: '/docs/react-update-from-setstate-to-commit'
             },
