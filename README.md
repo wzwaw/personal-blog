@@ -41,12 +41,12 @@ https://github.com/wzwaw/personal-blog
 
 ```bash
 npm run docs:build
-npx wrangler pages deploy docs/.vitepress/dist \
-  --project-name=muyue627-blog \
-  --branch=main
+git add .
+git commit -m "docs: 更新博客内容"
+git push origin main
 ```
 
-发布完成后再提交并推送源码。
+推送到 `main` 后，GitHub Actions 会自动构建并发布到 Cloudflare Pages。仅在本地执行 `git commit` 不会触发远端工作流。
 
 ### 备用 GitHub Pages
 

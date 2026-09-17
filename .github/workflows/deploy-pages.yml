@@ -1,12 +1,22 @@
-# Deploy Cloudflare Pages with Wrangler（需先配置 Secrets，否则请用 Dashboard 连 Git）
-name: Deploy Pages
+# Push main 后自动构建并发布正式博客，同时保留手动重跑入口。
+name: Deploy Cloudflare Pages
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
+
+concurrency:
+  group: cloudflare-pages-production
+  cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: cloudflare-pages
+      url: https://muyue627-blog.pages.dev
     permissions:
       contents: read
       deployments: write
@@ -29,4 +39,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy docs/.vitepress/dist --project-name=muyue627-blog --branch=main --commit-dirty=true
+          command: pages deploy docs/.vitepress/dist --project-name=muyue627-blog --branch=main --commit-hash=${{ github.sha }}

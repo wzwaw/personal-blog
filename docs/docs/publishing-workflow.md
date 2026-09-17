@@ -7,15 +7,15 @@
 3. 整理成 Markdown，放入对应目录
 4. 本地 `npm run docs:dev` 预览
 5. 运行 `npm run docs:build`
-6. 发布到 Cloudflare Pages：
+6. 提交并推送源码：
 
 ```bash
-npx wrangler pages deploy docs/.vitepress/dist \
-  --project-name=muyue627-blog \
-  --branch=main
+git add .
+git commit -m "docs: 更新博客内容"
+git push origin main
 ```
 
-7. 提交并推送源码
+7. GitHub Actions 自动构建并发布到 Cloudflare Pages
 
 ## 目录约定
 

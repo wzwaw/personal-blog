@@ -21,14 +21,21 @@ npx wrangler pages deploy docs/.vitepress/dist \
   --branch=main
 ```
 
-## GitHub Actions 发布
+## GitHub Actions 自动发布
 
 1. Cloudflare → My Profile → API Tokens → Create Token → 模板 **Edit Cloudflare Workers**（需含 Pages 编辑）
 2. 复制 Account ID（Workers 概览右侧）
 3. GitHub 仓库 → Settings → Secrets → Actions，添加：
    - `CLOUDFLARE_API_TOKEN`
    - `CLOUDFLARE_ACCOUNT_ID`
-4. 推送或手动跑 `.github/workflows/deploy-pages.yml`
+4. 推送 `main` 后，`.github/workflows/deploy-pages.yml` 自动构建并发布
+5. 需要重新发布时，也可以在 GitHub Actions 页面手动运行该工作流
+
+本地只执行 `git commit` 不会触发 GitHub Actions，还需要：
+
+```bash
+git push origin main
+```
 
 ## 备用：GitHub Pages
 
