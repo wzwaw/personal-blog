@@ -22,17 +22,19 @@ export default defineConfig({
       '/notes/': [
         {
           text: '工作思考',
-          items: [{ text: '写给第一篇的说明', link: '/notes/hello' }]
+          items: [
+            {
+              text: 'Clash 规则之外的根因',
+              link: '/notes/clashx-tun-corporate-vpn'
+            },
+            { text: '写给第一篇的说明', link: '/notes/hello' }
+          ]
         }
       ],
       '/docs/': [
         {
           text: '知识文档',
           items: [
-            {
-              text: 'macOS：ClashX TUN 与公司 VPN 排障',
-              link: '/docs/macos-clashx-tun-corporate-vpn'
-            },
             {
               text: 'React：从 setState 到 Commit',
               link: '/docs/react-update-from-setstate-to-commit'
