@@ -24,6 +24,10 @@ export default defineConfig({
           text: '工作思考',
           items: [
             {
+              text: '提示词使用优化总结',
+              link: '/notes/prompt-usage-optimization-summary'
+            },
+            {
               text: 'Clash 规则之外的根因',
               link: '/notes/clashx-tun-corporate-vpn'
             },
