@@ -24,6 +24,10 @@ export default defineConfig({
           text: '工作思考',
           items: [
             {
+              text: '多业务线架构边界',
+              link: '/notes/multi-business-architecture-boundaries'
+            },
+            {
               text: '提示词使用优化总结',
               link: '/notes/prompt-usage-optimization-summary'
             },

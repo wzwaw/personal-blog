@@ -4,6 +4,7 @@
 
 ## 文章列表
 
+- [多业务线前端架构：业务分离与能力复用的边界](/notes/multi-business-architecture-boundaries)
 - [提示词使用优化总结](/notes/prompt-usage-optimization-summary)
 - [我一直在改 Clash 规则，根因却在“设置为系统代理”那个勾](/notes/clashx-tun-corporate-vpn)
 - [写给第一篇的说明](/notes/hello)
