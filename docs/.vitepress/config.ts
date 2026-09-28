@@ -24,6 +24,14 @@ export default defineConfig({
           text: '工作思考',
           items: [
             {
+              text: '页面状态与三种抽象',
+              link: '/notes/page-states-and-three-abstractions'
+            },
+            {
+              text: '成熟系统里使用 AI',
+              link: '/notes/ai-boundaries-in-mature-systems'
+            },
+            {
               text: '多业务线架构边界',
               link: '/notes/multi-business-architecture-boundaries'
             },
@@ -46,6 +54,30 @@ export default defineConfig({
             {
               text: 'React：从 setState 到 Commit',
               link: '/docs/react-update-from-setstate-to-commit'
+            },
+            {
+              text: 'Hooks 为什么每次都执行',
+              link: '/docs/why-hooks-rerun'
+            },
+            {
+              text: 'Vue 3 响应式、watch 与 computed',
+              link: '/docs/vue3-watch-computed-reactivity'
+            },
+            {
+              text: 'Vue 2 里几类误判',
+              link: '/docs/vue2-pitfalls-beyond-the-framework'
+            },
+            {
+              text: '逻辑、表单和组件怎么抽',
+              link: '/docs/extract-logic-forms-and-components'
+            },
+            {
+              text: 'Vite 的开发与生产构建',
+              link: '/docs/vite-dev-server-and-production-bundle'
+            },
+            {
+              text: '跨端页面的环境约束',
+              link: '/docs/cross-platform-ui-constraints'
             },
             { text: '如何向本站投稿内容', link: '/docs/publishing-workflow' }
           ]
