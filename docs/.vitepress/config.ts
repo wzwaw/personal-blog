@@ -76,6 +76,10 @@ export default defineConfig({
               link: '/docs/vite-dev-server-and-production-bundle'
             },
             {
+              text: 'SSR 官网：CF、Nginx 与 Node',
+              link: '/docs/ssr-site-cloudflare-nginx-node'
+            },
+            {
               text: '跨端页面的环境约束',
               link: '/docs/cross-platform-ui-constraints'
             },

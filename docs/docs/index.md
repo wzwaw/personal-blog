@@ -10,5 +10,6 @@
 - [Vue 2 项目里几类看起来像框架 Bug 的问题](/docs/vue2-pitfalls-beyond-the-framework)
 - [逻辑、表单和组件，分别该抽到哪一层](/docs/extract-logic-forms-and-components)
 - [Vite 什么时候在打包，浏览器又从哪里开始渲染](/docs/vite-dev-server-and-production-bundle)
+- [SSR 官网部署：Cloudflare、Nginx 与 Node 各管哪一层](/docs/ssr-site-cloudflare-nginx-node)
 - [跨端页面里反复出现的环境约束](/docs/cross-platform-ui-constraints)
 - [如何向本站投稿内容](/docs/publishing-workflow)
