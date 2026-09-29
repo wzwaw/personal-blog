@@ -1,9 +1,15 @@
 import { defineConfig } from 'vitepress';
-import { withMermaid } from 'vitepress-plugin-mermaid';
+import { Transformer } from 'markmap-lib';
+
+const markmapTransformer = new Transformer();
+
+type MarkmapNode = ReturnType<Transformer['transform']>['root'];
+
+const countLeaves = (node: MarkmapNode): number =>
+  node.children?.length ? node.children.reduce((sum, child) => sum + countLeaves(child), 0) : 1;
 
 // https://vitepress.dev/reference/site-config
-// withMermaid 让 Markdown 中的 ```mermaid 代码块渲染为图表（思维导图、流程图等）
-export default withMermaid(defineConfig({
+export default defineConfig({
   lang: 'zh-CN',
   title: '个人博客',
   description: '工作思考 · 知识文档 · 外链摘录',
@@ -11,6 +17,20 @@ export default withMermaid(defineConfig({
   base: process.env.VITEPRESS_BASE || '/',
   cleanUrls: true,
   lastUpdated: true,
+
+  markdown: {
+    config(md) {
+      const renderFence = md.renderer.rules.fence!;
+      // ```markmap 代码块：构建期把 Markdown 大纲转成节点树，浏览器端只需按需加载绘图库
+      md.renderer.rules.fence = (tokens, idx, options, env, self) => {
+        const token = tokens[idx];
+        if (token.info.trim() !== 'markmap') return renderFence(tokens, idx, options, env, self);
+        const { root } = markmapTransformer.transform(token.content);
+        const data = encodeURIComponent(JSON.stringify(root));
+        return `<MarkmapDiagram data="${data}" :leaves="${countLeaves(root)}" />`;
+      };
+    }
+  },
 
   themeConfig: {
     nav: [
@@ -138,4 +158,4 @@ export default withMermaid(defineConfig({
       copyright: 'Copyright © 2026'
     }
   }
-}));
+});

@@ -1,0 +1,14 @@
+/*
+ * markmap 会把自带样式注入 SVG 内部（.markmap 单类选择器），
+ * 这里用更高优先级的选择器覆盖：字体跟随站点，深色模式对接 VitePress 的 html.dark
+ */
+.markmap-diagram .markmap {
+  --markmap-font: 400 15px/20px var(--vp-font-family-base);
+}
+
+.dark .markmap-diagram .markmap {
+  --markmap-code-bg: #1a1b26;
+  --markmap-code-color: #ddd;
+  --markmap-circle-open-bg: #444;
+  --markmap-text-color: #eee;
+}

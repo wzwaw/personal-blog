@@ -1,28 +1,77 @@
 # SSR 官网部署：Cloudflare、Nginx 与 Node 各管哪一层
 
-> 这是一次和 DeepSeek 的问答记录，按我的提问顺序整理。回答保留原文表述，只去掉了引用标记和对话里的客套收尾。
+> 这是一次和 DeepSeek 的问答记录，按我的提问顺序整理。回答保留原文表述，只去掉了引用标记和对话里的客套收尾。开头的思维导图和图解说明是整理时补充的背景知识。
 
 ## 整条链路
 
-```mermaid
----
-config:
-  htmlLabels: false
-  flowchart:
-    wrappingWidth: 400
-    nodeSpacing: 16
-    rankSpacing: 36
----
-flowchart LR
-  R(("SSR 官网<br/>部署链路"))
-  R --> Q1["1 CF 与 Nginx<br/>怎么配合"] --> D1["CF：橙云代理、SSL 完全严格、CDN、DDoS<br/>Nginx：Origin 证书，443 反代到应用<br/>realip 取 CF-Connecting-IP<br/>防火墙只放行 CF IP 段"]
-  R --> Q2["2 请求会经过<br/>Node 再到后端吗"] --> D2["Nginx 在 Node 前面<br/>页面：CF → Nginx → Node SSR<br/>/api 可由 Nginx 直连后端<br/>Node 调后端走内网直连"]
-  R --> Q3["3 为什么让请求<br/>经过 Node 中间件"] --> D3["Node 充当 BFF / 应用网关<br/>鉴权、聚合裁剪、预处理、缓存<br/>代价：多一跳、单点瓶颈"]
-  R --> Q4["4 Node 层<br/>谁来写"] --> D4["语言是 JS / TS<br/>前端可以写，属于 BFF / 全栈<br/>要补安全、缓存一致性、容错"]
-  R --> Q5["5 Nuxt 打包后<br/>跑在哪"] --> D5[".output 是 Nitro 服务器<br/>node .output/server/index.mjs<br/>必须 Node 环境，Nginx 只做反代<br/>服务端逻辑写在 server 目录"]
-  R --> Q6["6 K8s 部署<br/>与 CF 回源"] --> D6["同 Pod 或不同 Pod 都可以<br/>用户只看到域名，DNS 指向 CF<br/>CF 回源到源站 IP:443<br/>真实 IP 取 CF-Connecting-IP"]
-  R --> Q7["7 非 SSR<br/>还需要 Node 吗"] --> D7["构建需要，运行通常不需要<br/>dist 交给 Nginx / CDN<br/>例外：BFF、API Routes、ISR"]
+```markmap
+# SSR 官网部署链路
+
+## 入口：Cloudflare
+- DNS 橙云代理，隐藏源站 IP
+- SSL：完全（严格）
+- 边缘缓存 · DDoS / WAF
+- 回源：公网入口或 Tunnel
+
+## 网关：Nginx
+- 443 接收回源请求
+- Origin 证书完成 TLS
+- realip 还原用户 IP
+- 路由分流
+  - /api → 后端
+  - /* → Node SSR
+- 静态资源直出
+
+## 应用：Node（Nuxt / Nitro）
+- SSR 渲染页面
+- BFF：鉴权 · 聚合 · 缓存
+- server/ 目录写服务端逻辑
+- 产物 .output，默认 3000 端口
+- 代价：多一跳，要高可用
+
+## 服务：后端 API
+- Node 走内网直连
+- /api 也可绕过 Node
+
+## 部署：K8s
+- Pod：最小调度单位
+- Sidecar：同 Pod 共享网络
+- Deployment：副本与滚动发布
+- Service：稳定地址 + 负载均衡
+- Ingress：集群 HTTP 入口
+
+## 对照：非 SSR 项目
+- 构建要 Node，运行不要
+- dist → Nginx / CDN / Pages
+- try_files 回退 index.html
+- 例外：BFF · API Routes · ISR
 ```
+
+### 图解说明
+
+**入口：Cloudflare**（对应问题 1、6）
+
+用户访问的始终是域名。DNS 记录开启「橙云代理」后，解析出来的是 Cloudflare 边缘节点的 IP，源站真实地址对外不可见。SSL 有几档：「灵活」只加密用户到 Cloudflare 这一段，Cloudflare 到源站是明文；「完全」两段都加密，但不校验源站证书；「完全（严格）」要求源站证书有效，用 Cloudflare 签发的 Origin 证书即可，生产环境应选这一档。Cloudflare 默认只缓存图片、CSS、JS 等静态资源，HTML 是否缓存取决于缓存规则和源站返回的 `Cache-Control`。回源有两种方式：Cloudflare 连接源站的公网入口，或者在源站运行 `cloudflared` 主动建立隧道（Tunnel），后者源站不需要开放任何公网端口。
+
+**网关：Nginx**（对应问题 1、2、6）
+
+Nginx 是源站的第一站：在 443 端口接收 Cloudflare 的回源请求，用 Origin 证书完成 TLS 握手，再按 `location` 规则分流，`/api` 可以直接转发给后端，其余交给 Node 做 SSR，静态资源则由 Nginx 直接返回。因为 TCP 连接来自 Cloudflare 节点，Nginx 看到的源 IP 是 Cloudflare 的，需要 `realip` 模块从 `CF-Connecting-IP` 头还原用户 IP。这里有个安全前提：`set_real_ip_from` 只能填 Cloudflare 公布的 IP 段，否则任何人伪造这个请求头都能冒充 IP。在 K8s 里，这个角色常由 Ingress Controller 承担，比如 ingress-nginx，本质上也是 Nginx。
+
+**应用：Node（Nuxt / Nitro）**（对应问题 3、4、5）
+
+SSR 项目的构建产物不是一堆静态文件，而是一个服务端程序。Nuxt 3 执行 `nuxt build` 后生成 `.output`，其中的 Nitro 服务通过 `node .output/server/index.mjs` 启动，默认监听 3000 端口。Node 层除了渲染页面，还可以承担 BFF（Backend for Frontend）职责：统一鉴权、聚合多个后端接口并裁剪字段、做缓存。这些逻辑用 JS/TS 写在 `server/` 目录下，前端可以开发，但要补上服务端的安全、缓存一致性和容错知识。补充一点：「必须运行在 Node 上」指的是 Nitro 默认的 `node-server` 预设，Nitro 也能打包到 Cloudflare Pages/Workers、Vercel 等边缘或 Serverless 运行时；如果用 `nuxt generate` 预渲染成静态站点，就完全不需要服务端运行时。
+
+**服务：后端 API**（对应问题 2）
+
+Node 渲染页面时调用后端，通常走集群内网直连，比如直接访问 K8s 的 Service 名，不需要再绕回 Nginx。浏览器直接发起的 `/api` 请求，可以由 Nginx 转发给后端，完全不经过 Node。要不要让 `/api` 经过 Node，取决于是否需要在 Node 层统一处理鉴权、聚合这类逻辑。
+
+**部署：K8s**（对应问题 6）
+
+Pod 是 K8s 调度的最小单位，里面可以放一个或多个容器，同一个 Pod 的容器共享网络，所以 Sidecar 模式下 Nginx 能用 `127.0.0.1:3000` 访问 Node。Deployment 管理一组相同的 Pod，负责副本数量和滚动发布。Pod 会被销毁重建，IP 也随之变化，所以要用 Service 提供稳定的访问地址，并在多个 Pod 之间做负载均衡：ClusterIP 类型只在集群内可达，NodePort 和 LoadBalancer 类型才能对外暴露。Ingress 是集群的 HTTP 入口规则，要配合 Ingress Controller 才会生效。实际部署中更常见的是 Nginx 和 Node 分成两个 Deployment，各自按负载扩缩容；Node 服务还应该配置就绪探针（readinessProbe），保证 SSR 服务启动完成后才开始接收流量。
+
+**对照：非 SSR 项目**（对应问题 7）
+
+要区分构建和运行两个阶段。无论是不是 SSR，构建都需要 Node，用来安装依赖、执行 Vite 或 Webpack 打包；纯 SPA 的产物只有 `index.html` 和静态资源，运行时交给 Nginx、CDN 或 Cloudflare Pages 这类静态托管即可，Node 不参与。用 Nginx 托管 SPA 时要配置 `try_files $uri $uri/ /index.html`，否则刷新前端路由页面会返回 404。判断一个项目运行时需不需要 Node，看产物里有没有服务端入口，比如 `server/` 目录或 `index.mjs`。
 
 ## 1. Nginx 和 CDN 网站比如 Cloudflare 怎么配合部署一个官网网站
 
