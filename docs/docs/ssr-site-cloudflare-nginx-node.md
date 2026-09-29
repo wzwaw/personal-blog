@@ -4,49 +4,24 @@
 
 ## 整条链路
 
-```text
-SSR 官网部署链路
-├── 1. 入口：Cloudflare 和 Nginx 怎么配合
-│   ├── Cloudflare：DNS 橙云代理、SSL「完全（严格）」、CDN 缓存、DDoS 防护
-│   ├── Nginx：安装 Origin 证书，监听 443，反向代理到应用端口
-│   ├── 真实 IP：realip 取 CF-Connecting-IP；防火墙只放行 CF IP 段
-│   └── 排查：525 握手错误、缓存不生效
-│
-├── 2. SSR 的业务请求会经过 Node、中间件、Nginx 再到后端吗
-│   ├── 顺序通常是 Nginx 在 Node 前面
-│   ├── 页面请求：CF → Nginx → Node SSR → Node 中间件 → 渲染
-│   ├── /api 可以由 Nginx 直接转发后端，不经过 Node
-│   └── Node 渲染时调后端：通常内网直连，不再绕 Nginx
-│
-├── 3. 为什么有时要让请求经过 Node 中间件
-│   ├── Node 不只做渲染，而是充当 BFF / 应用网关
-│   ├── 统一鉴权、聚合裁剪、SSR 预处理、安全限流、缓存、日志、灰度
-│   └── 代价：多一跳、Node 成为瓶颈；无业务逻辑的请求直连后端更好
-│
-├── 4. Node 层这些逻辑谁来写、用什么语言
-│   ├── JS / TS，运行在 Node.js（Next.js、Nuxt、Remix、NestJS、Express…）
-│   ├── 前端可以写，但这已是 BFF / 全栈开发
-│   └── 需要补：会话与安全、缓存一致性、并发容错、部署监控
-│
-├── 5. Nuxt 打包后运行在 Node 还是 Nginx 上
-│   ├── .output 是 Nitro 服务器，默认监听 3000 端口
-│   ├── 启动：node .output/server/index.mjs
-│   ├── 必须运行在 Node 环境；Nginx 只负责反向代理、SSL、静态资源
-│   └── 服务端逻辑写在 server/middleware、server/api、server/plugins
-│
-├── 6. K8s 里 Nginx 和 Node 的关系，CF 请求怎么到 Nginx
-│   ├── 同 Pod（Sidecar，127.0.0.1）或不同 Pod（Service 名）
-│   ├── 也可能由 Ingress / 网关替代 Nginx
-│   ├── 用户只看到域名，DNS 指向 Cloudflare
-│   ├── CF 作为客户端回源到源站入口 IP:443，SNI + Origin 证书完成握手
-│   ├── Nginx 看到的是 CF 节点 IP，真实 IP 取 CF-Connecting-IP
-│   └── 也可用 Cloudflare Tunnel 隐藏源站
-│
-└── 7. 非 SSR 项目还会运行在 Node 环境吗
-    ├── 构建阶段需要 Node，运行阶段通常不需要
-    ├── dist 静态文件交给 Nginx / CDN / 静态托管平台
-    ├── 例外：BFF、API Routes、鉴权中间件、ISR 需要服务端运行时
-    └── 判断：产物只有 index.html + assets，就不需要 Node 运行时
+```mermaid
+---
+config:
+  htmlLabels: false
+  flowchart:
+    wrappingWidth: 400
+    nodeSpacing: 16
+    rankSpacing: 36
+---
+flowchart LR
+  R(("SSR 官网<br/>部署链路"))
+  R --> Q1["1 CF 与 Nginx<br/>怎么配合"] --> D1["CF：橙云代理、SSL 完全严格、CDN、DDoS<br/>Nginx：Origin 证书，443 反代到应用<br/>realip 取 CF-Connecting-IP<br/>防火墙只放行 CF IP 段"]
+  R --> Q2["2 请求会经过<br/>Node 再到后端吗"] --> D2["Nginx 在 Node 前面<br/>页面：CF → Nginx → Node SSR<br/>/api 可由 Nginx 直连后端<br/>Node 调后端走内网直连"]
+  R --> Q3["3 为什么让请求<br/>经过 Node 中间件"] --> D3["Node 充当 BFF / 应用网关<br/>鉴权、聚合裁剪、预处理、缓存<br/>代价：多一跳、单点瓶颈"]
+  R --> Q4["4 Node 层<br/>谁来写"] --> D4["语言是 JS / TS<br/>前端可以写，属于 BFF / 全栈<br/>要补安全、缓存一致性、容错"]
+  R --> Q5["5 Nuxt 打包后<br/>跑在哪"] --> D5[".output 是 Nitro 服务器<br/>node .output/server/index.mjs<br/>必须 Node 环境，Nginx 只做反代<br/>服务端逻辑写在 server 目录"]
+  R --> Q6["6 K8s 部署<br/>与 CF 回源"] --> D6["同 Pod 或不同 Pod 都可以<br/>用户只看到域名，DNS 指向 CF<br/>CF 回源到源站 IP:443<br/>真实 IP 取 CF-Connecting-IP"]
+  R --> Q7["7 非 SSR<br/>还需要 Node 吗"] --> D7["构建需要，运行通常不需要<br/>dist 交给 Nginx / CDN<br/>例外：BFF、API Routes、ISR"]
 ```
 
 ## 1. Nginx 和 CDN 网站比如 Cloudflare 怎么配合部署一个官网网站

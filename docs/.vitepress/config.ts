@@ -1,7 +1,9 @@
 import { defineConfig } from 'vitepress';
+import { withMermaid } from 'vitepress-plugin-mermaid';
 
 // https://vitepress.dev/reference/site-config
-export default defineConfig({
+// withMermaid 让 Markdown 中的 ```mermaid 代码块渲染为图表（思维导图、流程图等）
+export default withMermaid(defineConfig({
   lang: 'zh-CN',
   title: '个人博客',
   description: '工作思考 · 知识文档 · 外链摘录',
@@ -136,4 +138,4 @@ export default defineConfig({
       copyright: 'Copyright © 2026'
     }
   }
-});
+}));
