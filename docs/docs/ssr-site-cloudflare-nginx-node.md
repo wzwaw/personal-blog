@@ -9,7 +9,8 @@ SSR 官网部署链路
 ├── 1. 入口：Cloudflare 和 Nginx 怎么配合
 │   ├── Cloudflare：DNS 橙云代理、SSL「完全（严格）」、CDN 缓存、DDoS 防护
 │   ├── Nginx：安装 Origin 证书，监听 443，反向代理到应用端口
-│   └── 要点：realip 取 CF-Connecting-IP；防火墙只放行 CF IP 段；525、缓存不生效排查
+│   ├── 真实 IP：realip 取 CF-Connecting-IP；防火墙只放行 CF IP 段
+│   └── 排查：525 握手错误、缓存不生效
 │
 ├── 2. SSR 的业务请求会经过 Node、中间件、Nginx 再到后端吗
 │   ├── 顺序通常是 Nginx 在 Node 前面
@@ -28,15 +29,18 @@ SSR 官网部署链路
 │   └── 需要补：会话与安全、缓存一致性、并发容错、部署监控
 │
 ├── 5. Nuxt 打包后运行在 Node 还是 Nginx 上
-│   ├── .output 是 Nitro 服务器：node .output/server/index.mjs，默认 3000 端口
+│   ├── .output 是 Nitro 服务器，默认监听 3000 端口
+│   ├── 启动：node .output/server/index.mjs
 │   ├── 必须运行在 Node 环境；Nginx 只负责反向代理、SSL、静态资源
 │   └── 服务端逻辑写在 server/middleware、server/api、server/plugins
 │
 ├── 6. K8s 里 Nginx 和 Node 的关系，CF 请求怎么到 Nginx
-│   ├── 同 Pod（Sidecar，127.0.0.1）/ 不同 Pod（Service 名）/ Ingress 替代 Nginx
+│   ├── 同 Pod（Sidecar，127.0.0.1）或不同 Pod（Service 名）
+│   ├── 也可能由 Ingress / 网关替代 Nginx
 │   ├── 用户只看到域名，DNS 指向 Cloudflare
 │   ├── CF 作为客户端回源到源站入口 IP:443，SNI + Origin 证书完成握手
-│   └── Nginx 看到的是 CF 节点 IP，真实 IP 取 CF-Connecting-IP；也可用 Tunnel 隐藏源站
+│   ├── Nginx 看到的是 CF 节点 IP，真实 IP 取 CF-Connecting-IP
+│   └── 也可用 Cloudflare Tunnel 隐藏源站
 │
 └── 7. 非 SSR 项目还会运行在 Node 环境吗
     ├── 构建阶段需要 Node，运行阶段通常不需要
