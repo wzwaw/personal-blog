@@ -46,6 +46,10 @@ export default defineConfig({
           text: '工作思考',
           items: [
             {
+              text: 'AI 已进入开发主流程',
+              link: '/notes/ai-aigc-development-workflow-2026'
+            },
+            {
               text: '页面状态与三种抽象',
               link: '/notes/page-states-and-three-abstractions'
             },
