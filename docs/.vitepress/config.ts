@@ -46,6 +46,10 @@ export default defineConfig({
           text: '工作思考',
           items: [
             {
+              text: '从会做需求到会判断问题',
+              link: '/notes/from-developer-to-product-thinking'
+            },
+            {
               text: 'AI 已进入开发主流程',
               link: '/notes/ai-aigc-development-workflow-2026'
             },
@@ -77,6 +81,10 @@ export default defineConfig({
         {
           text: '知识文档',
           items: [
+            {
+              text: '产品思维练习手册',
+              link: '/docs/product-thinking-practice-workbook'
+            },
             {
               text: 'React：从 setState 到 Commit',
               link: '/docs/react-update-from-setstate-to-commit'
