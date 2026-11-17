@@ -46,6 +46,10 @@ export default defineConfig({
           text: '工作思考',
           items: [
             {
+              text: '一条评论从手机到数据库',
+              link: '/notes/comment-submit-sync-or-queue'
+            },
+            {
               text: '从会做需求到会判断问题',
               link: '/notes/from-developer-to-product-thinking'
             },

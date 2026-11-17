@@ -4,6 +4,7 @@
 
 ## 文章列表
 
+- [一条评论从手机到数据库：要不要先进消息队列](/notes/comment-submit-sync-or-queue)
 - [从会做需求到会判断问题：开发者的产品思维练习](/notes/from-developer-to-product-thinking)
 - [AI 已进入开发主流程，但还没到无人托管](/notes/ai-aigc-development-workflow-2026)
 - [页面至少要交代的状态，以及三种抽象不要混用](/notes/page-states-and-three-abstractions)
