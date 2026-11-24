@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="900" viewBox="0 0 560 900" role="img" aria-labelledby="title desc">
+  <title id="title">个人 AI 问答机器人工作流程</title>
+  <desc id="desc">用户在飞书提问，长连接接收消息，Python 选择项目并检索资料，Codex CLI 调用云端模型，答案经飞书消息 API 回复原会话。常驻的是接收和调度程序。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 8 4 0 8" fill="none" stroke="#71849a" stroke-width="1.5"/></marker>
+    <style>
+      text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+      .title{font-size:26px;font-weight:700;fill:#19334d}
+      .main{font-size:22px;font-weight:650;fill:#19334d}
+      .sub{font-size:18px;fill:#4c6478}
+      .tag{font-size:15px;font-weight:600;fill:#536c83}
+      .num{font-size:17px;font-weight:700;fill:#fff}
+    </style>
+  </defs>
+  <rect width="560" height="900" rx="22" fill="#f5f8fc"/>
+  <text x="280" y="48" text-anchor="middle" class="title">一条问题怎样走完一圈</text>
+  <g fill="none" stroke="#71849a" stroke-width="2" marker-end="url(#arrow)">
+    <path d="M280 170V200"/><path d="M280 290V320"/><path d="M280 410V440"/><path d="M280 530V560"/><path d="M280 650V680"/>
+  </g>
+  <g>
+    <rect x="32" y="80" width="496" height="90" rx="14" fill="#e8f0ff" stroke="#bed0f0"/>
+    <circle cx="61" cy="108" r="14" fill="#527ec2"/><text x="61" y="114" text-anchor="middle" class="num">1</text>
+    <text x="88" y="112" class="main">用户向飞书机器人提问</text><text x="88" y="144" class="sub">私聊，或在群内 @ 机器人</text>
+    <rect x="32" y="200" width="496" height="90" rx="14" fill="#e8f5f1" stroke="#b8dcd0"/>
+    <circle cx="61" cy="228" r="14" fill="#398b77"/><text x="61" y="234" text-anchor="middle" class="num">2</text>
+    <text x="88" y="232" class="main">飞书 CLI 接收消息</text><text x="88" y="264" class="sub">长连接将消息事件交给后台程序</text>
+    <rect x="32" y="320" width="496" height="90" rx="14" fill="#e8f5f1" stroke="#b8dcd0"/>
+    <circle cx="61" cy="348" r="14" fill="#398b77"/><text x="61" y="354" text-anchor="middle" class="num">3</text>
+    <text x="88" y="352" class="main">Python 选择项目并检索</text><text x="88" y="384" class="sub">查找知识段落，核对关联代码证据</text>
+    <rect x="32" y="440" width="496" height="90" rx="14" fill="#fff1df" stroke="#e9cda4"/>
+    <circle cx="61" cy="468" r="14" fill="#b07e38"/><text x="61" y="474" text-anchor="middle" class="num">4</text>
+    <text x="88" y="472" class="main">Codex CLI 调用云端模型</text><text x="88" y="504" class="sub">传入问题与材料，取得生成的答案</text>
+    <rect x="32" y="560" width="496" height="90" rx="14" fill="#e8f5f1" stroke="#b8dcd0"/>
+    <circle cx="61" cy="588" r="14" fill="#398b77"/><text x="61" y="594" text-anchor="middle" class="num">5</text>
+    <text x="88" y="592" class="main">后台程序发起回复</text><text x="88" y="624" class="sub">飞书 CLI 以机器人身份调用消息 API</text>
+    <rect x="32" y="680" width="496" height="90" rx="14" fill="#e8f0ff" stroke="#bed0f0"/>
+    <circle cx="61" cy="708" r="14" fill="#527ec2"/><text x="61" y="714" text-anchor="middle" class="num">6</text>
+    <text x="88" y="712" class="main">答案回到原消息下</text><text x="88" y="744" class="sub">附上依据，资料不足时说明待确认</text>
+  </g>
+  <circle cx="50" cy="812" r="6" fill="#398b77"/><text x="65" y="818" class="tag">本机处理</text>
+  <circle cx="202" cy="812" r="6" fill="#527ec2"/><text x="217" y="818" class="tag">飞书消息入口</text>
+  <circle cx="386" cy="812" r="6" fill="#b07e38"/><text x="401" y="818" class="tag">模型推理</text>
+  <text x="280" y="861" text-anchor="middle" class="sub">空闲时等待消息；有问题时才运行 AI 任务</text>
+</svg>

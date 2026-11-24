@@ -46,6 +46,10 @@ export default defineConfig({
           text: '工作思考',
           items: [
             {
+              text: '个人ai问答机器人',
+              link: '/notes/personal-ai-qa-bot'
+            },
+            {
               text: '一条评论从手机到数据库',
               link: '/notes/comment-submit-sync-or-queue'
             },
