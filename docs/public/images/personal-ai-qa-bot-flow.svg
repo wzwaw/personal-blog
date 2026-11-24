@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="560" height="900" viewBox="0 0 560 900" role="img" aria-labelledby="title desc">
   <title id="title">个人 AI 问答机器人工作流程</title>
-  <desc id="desc">用户在飞书提问，长连接接收消息，Python 选择项目并检索资料，Codex CLI 调用云端模型，答案经飞书消息 API 回复原会话。常驻的是接收和调度程序。</desc>
+  <desc id="desc">用户在飞书提问，长连接接收消息，Python 选择项目并检索资料，通过 AI API 或 Codex CLI 调用模型，答案经飞书消息 API 回复原会话。常驻的是接收和调度程序。</desc>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 8 4 0 8" fill="none" stroke="#71849a" stroke-width="1.5"/></marker>
     <style>
@@ -29,7 +29,7 @@
     <text x="88" y="352" class="main">Python 选择项目并检索</text><text x="88" y="384" class="sub">查找知识段落，核对关联代码证据</text>
     <rect x="32" y="440" width="496" height="90" rx="14" fill="#fff1df" stroke="#e9cda4"/>
     <circle cx="61" cy="468" r="14" fill="#b07e38"/><text x="61" y="474" text-anchor="middle" class="num">4</text>
-    <text x="88" y="472" class="main">Codex CLI 调用云端模型</text><text x="88" y="504" class="sub">传入问题与材料，取得生成的答案</text>
+    <text x="88" y="472" class="main">AI API / Codex CLI 调用模型</text><text x="88" y="504" class="sub">传入问题与材料，取得生成的答案</text>
     <rect x="32" y="560" width="496" height="90" rx="14" fill="#e8f5f1" stroke="#b8dcd0"/>
     <circle cx="61" cy="588" r="14" fill="#398b77"/><text x="61" y="594" text-anchor="middle" class="num">5</text>
     <text x="88" y="592" class="main">后台程序发起回复</text><text x="88" y="624" class="sub">飞书 CLI 以机器人身份调用消息 API</text>
