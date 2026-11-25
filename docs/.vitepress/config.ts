@@ -90,6 +90,10 @@ export default defineConfig({
           text: '知识文档',
           items: [
             {
+              text: '知识库搭建',
+              link: '/docs/knowledge-base-building'
+            },
+            {
               text: '产品思维练习手册',
               link: '/docs/product-thinking-practice-workbook'
             },

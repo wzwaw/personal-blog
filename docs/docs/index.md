@@ -4,6 +4,7 @@
 
 ## 文档列表
 
+- [知识库搭建](/docs/knowledge-base-building)
 - [产品思维练习手册](/docs/product-thinking-practice-workbook)
 - [React 更新到底发生了什么：从 setState 到 Commit](/docs/react-update-from-setstate-to-commit)
 - [Hooks 每次都重新执行，贵的不是这次调用](/docs/why-hooks-rerun)
