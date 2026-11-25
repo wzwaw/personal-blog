@@ -46,6 +46,10 @@ export default defineConfig({
           text: '工作思考',
           items: [
             {
+              text: '从脚本到桌面工具',
+              link: '/notes/batch-release-desktop-tool'
+            },
+            {
               text: '个人ai问答机器人',
               link: '/notes/personal-ai-qa-bot'
             },

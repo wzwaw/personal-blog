@@ -4,6 +4,7 @@
 
 ## 文章列表
 
+- [从脚本到桌面工具：一次批量发布的工程实践](/notes/batch-release-desktop-tool)
 - [个人ai问答机器人](/notes/personal-ai-qa-bot)
 - [一条评论从手机到数据库：要不要先进消息队列](/notes/comment-submit-sync-or-queue)
 - [从会做需求到会判断问题：开发者的产品思维练习](/notes/from-developer-to-product-thinking)
